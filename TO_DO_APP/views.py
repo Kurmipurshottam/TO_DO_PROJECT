@@ -38,7 +38,7 @@ def login(request):
               sweetify.success(request,"Login Successfully...")
               return redirect('index')
          else:
-              sweetify.error("password  is wrong!!!!")
+              sweetify.error(request,"password  is wrong!!!!")
               return redirect('login')
     else:
          print("else part of logins")
@@ -48,6 +48,7 @@ def index(request):
     user = User.objects.get(email=request.session['email'])
     if request.method == 'POST':
         Task.objects.create(user=user, des=request.POST['des'],created_at=now())
+        sweetify.success(request,"Task Created")
         return redirect('index')
 
 
@@ -100,13 +101,15 @@ def edit_task(request,id):
     if request.POST:
         task.des=request.POST['taskDescription']
         task.save()
+        sweetify.success(request,"Task Updated SuccessFully!!")
         return redirect('index')   
     
 def delete_task(request,id):
     task=Task.objects.get(id=id)
     print(task)
     task.delete()
-    return redirect('index') 
+    sweetify.success(request,"Task Deleted SuccessFully!!")
+    return redirect('index')
 
         
     
